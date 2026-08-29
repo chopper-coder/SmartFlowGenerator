@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="color-scheme" content="light dark">
-<title>智慧流程圖產生器 V1.9.5.2</title>
+<title>智慧流程圖產生器 V1.9.5.3</title>
 <style>
 :root{
   --bg:#fff8fc;
@@ -488,11 +488,11 @@ input[type="range"]{accent-color:var(--accent)!important}
 <div class="app" id="app">
   <div class="header">
     <div class="brand">
-      <div class="mascot app-logo" title="智慧流程圖產生器 V1.9.5.2">
-        <img src="assets/dog-mascot-logo.png" alt="智慧流程圖產生器 V1.9.5.2 LOGO">
+      <div class="mascot app-logo" title="智慧流程圖產生器 V1.9.5.3">
+        <img src="assets/dog-mascot-logo.png" alt="智慧流程圖產生器 V1.9.5.3 LOGO">
       </div>
       <div class="title">
-        <h1>智慧流程圖產生器 V1.9.5.2</h1>
+        <h1>智慧流程圖產生器 V1.9.5.3</h1>
       </div>
     </div>
     <div class="badge" id="statusBadge">🐾 準備完成</div>
@@ -739,11 +739,11 @@ input[type="range"]{accent-color:var(--accent)!important}
         <div class="tool-section-body">
 <div class="export-panel">
         <div class="section-title" style="font-size:14px;margin-bottom:6px">專業輸出與資料安全</div>
-        <div class="help">輸出前可先看 A4 實際分頁；大型 PDF 會自動降低安全解析度，避免瀏覽器記憶體不足。所有處理都在瀏覽器本機完成。</div>
+        <div class="help">長流程建議使用「閱讀清晰」自動分頁，避免整張流程圖硬縮成一頁。PDF 會以真正高解析重新渲染，放大查看文字會更清楚；大型 PDF 仍會自動啟用記憶體保護。</div>
         <div class="export-grid" style="margin-top:10px">
           <label><span>A4 方向</span><select id="printOrientation"><option value="auto">自動判斷</option><option value="portrait">A4 直式</option><option value="landscape">A4 橫式</option></select></label>
-          <label><span>頁面模式</span><select id="printFit"><option value="single">單頁縮放</option><option value="multipage">自動多頁</option></select></label>
-          <label><span>頁面邊界</span><select id="pageMargin"><option value="6">窄 6 mm</option><option value="10" selected>標準 10 mm</option><option value="15">寬 15 mm</option><option value="20">超寬 20 mm</option></select></label>
+          <label><span>頁面模式</span><select id="printFit"><option value="multipage" selected>閱讀清晰（推薦，自動多頁）</option><option value="single">單頁全圖（可能字較小）</option></select></label>
+          <label><span>頁面邊界</span><select id="pageMargin"><option value="6" selected>窄 6 mm（推薦）</option><option value="10">標準 10 mm</option><option value="15">寬 15 mm</option><option value="20">超寬 20 mm</option></select></label>
         </div>
         <div class="export-grid four" style="margin-top:9px">
           <label><span>PDF 標題</span><input id="printTitle" type="text" value="流程圖"></label>
@@ -751,9 +751,10 @@ input[type="range"]{accent-color:var(--accent)!important}
           <label><span>標題字型</span><select id="titleFontFamily"><option value="default">微軟正黑體</option><option value="mingliu">新細明體</option><option value="kai">標楷體</option><option value="arial">Arial</option><option value="georgia">Georgia</option></select></label>
           <label><span>標題對齊</span><select id="titleAlign"><option value="center">置中</option><option value="left">靠左</option><option value="right">靠右</option></select></label>
         </div>
-        <div class="export-grid" style="margin-top:9px">
+        <div class="export-grid four" style="margin-top:9px">
           <label><span>PNG 解析度</span><select id="pngScale"><option value="1">1× 一般</option><option value="2" selected>2× 高解析</option><option value="4">4× 超高解析</option></select></label>
-          <label><span>PDF 畫質</span><select id="pdfQuality"><option value="0.86">標準</option><option value="0.92" selected>高畫質</option><option value="0.97">最高畫質</option></select></label>
+          <label><span>PDF 解析度</span><select id="pdfDpi"><option value="180">180 DPI 標準</option><option value="240">240 DPI 清晰</option><option value="300" selected>300 DPI 超清晰（推薦）</option></select></label>
+          <label><span>PDF 壓縮品質</span><select id="pdfQuality"><option value="0.86">標準</option><option value="0.92">高畫質</option><option value="0.97" selected>最高畫質</option></select></label>
           <label><span>跨頁接續</span><select id="pageOverlap"><option value="0">不重疊</option><option value="16" selected>少量接續</option><option value="32">較多接續</option></select></label>
         </div>
         <div class="export-grid" style="margin-top:9px">
@@ -825,7 +826,7 @@ input[type="range"]{accent-color:var(--accent)!important}
     </section>
   </div>
   <div class="footer">
-    智慧流程圖產生器 V1.9.5.2　｜　程式碼出處：
+    智慧流程圖產生器 V1.9.5.3　｜　程式碼出處：
     <a href="https://github.com/chopper-coder" target="_blank" rel="noopener noreferrer">https://github.com/chopper-coder</a>
   </div>
   <div class="export-modal hidden" id="exportModal" role="dialog" aria-modal="true" aria-labelledby="exportModalTitle">
@@ -910,7 +911,7 @@ let fitMode=true,viewZoom=1,canvasPanX=0,canvasPanY=0,panState=null,dragState=nu
 let canvasBounds={x:0,y:0,w:1200,h:800};
 let exportBounds={x:0,y:0,w:1200,h:800};
 let autosaveTimer=null,autosaveReady=false;
-const AUTOSAVE_KEY="smartflow.v1952.autosave";
+const AUTOSAVE_KEY="smartflow.v1953.autosave";
 
 const uid=()=>Math.random().toString(36).slice(2,10);
 const clone=v=>JSON.parse(JSON.stringify(v));
@@ -2669,7 +2670,8 @@ function exportSettings(){
     titleFont:validFontKey($("#titleFontFamily").value)?$("#titleFontFamily").value:"default",
     titleAlign:["left","center","right"].includes($("#titleAlign").value)?$("#titleAlign").value:"center",
     pngScale:[1,2,4].includes(Number($("#pngScale").value))?Number($("#pngScale").value):2,
-    pdfQuality:Math.max(.8,Math.min(.98,Number($("#pdfQuality").value)||.92)),
+    pdfDpi:[180,240,300].includes(Number($("#pdfDpi").value))?Number($("#pdfDpi").value):300,
+    pdfQuality:Math.max(.8,Math.min(.98,Number($("#pdfQuality").value)||.97)),
     overlap:Math.max(0,Math.min(48,Number($("#pageOverlap").value)||0)),
     showGuides:$("#pageGuideMode").value!=="hide"
   };
@@ -2730,17 +2732,25 @@ function makePagePlan(){
   return{...cfg,orientation,mm,pages};
 }
 function safePdfDpi(plan){
-  let dpi=150;
-  const pxPerPage=(plan.mm.w/25.4*dpi)*(plan.mm.h/25.4*dpi),total=pxPerPage*plan.pages.length;
-  if(plan.pages.length>20||total>70000000)dpi=96;
-  else if(plan.pages.length>10||total>42000000)dpi=120;
-  return dpi;
+  const requested=[180,240,300].includes(Number(plan.pdfDpi))?Number(plan.pdfDpi):300;
+  let dpi=requested;
+  const pagePixels=d=>(plan.mm.w/25.4*d)*(plan.mm.h/25.4*d);
+  const totalPixels=d=>pagePixels(d)*plan.pages.length;
+
+  // 每頁逐張渲染並釋放 Canvas，因此可比舊版 150 DPI 更積極保留清晰度。
+  // 極大量頁數才逐級降低，避免手機或低記憶體瀏覽器崩潰。
+  if(plan.pages.length>36||totalPixels(dpi)>360000000)dpi=Math.min(dpi,180);
+  else if(plan.pages.length>18||totalPixels(dpi)>220000000)dpi=Math.min(dpi,240);
+
+  return Math.max(180,dpi);
 }
 function updateExportSummary(){
   const box=$("#exportSummary");if(!box)return;
   if(!nodes.length){box.textContent="完成流程圖後會顯示建議方向、頁數與 PDF 安全畫質。";return}
   const p=makePagePlan(),dpi=safePdfDpi(p),auto=$("#printOrientation").value==="auto";
-  box.textContent=`${auto?"自動建議":"目前設定"}：${p.orientation==="landscape"?"A4 橫式":"A4 直式"}・${p.mode==="single"?"單頁縮放":`自動多頁模式・目前 ${p.pages.length} 頁${p.pages.length===1?"（內容可容納於單頁）":""}`}・PDF ${dpi} DPI${dpi<150?"（已啟用記憶體保護）":""}・已自動裁切多餘白邊`;
+  const dpiNote=dpi<p.pdfDpi?`（原設定 ${p.pdfDpi} DPI，已啟用記憶體保護）`:"";
+  const modeText=p.mode==="single"?"單頁全圖（流程較長時文字會縮小）":`閱讀清晰・自動多頁 ${p.pages.length} 頁${p.pages.length===1?"（目前可容納於單頁）":""}`;
+  box.textContent=`${auto?"自動建議":"目前設定"}：${p.orientation==="landscape"?"A4 橫式":"A4 直式"}・${modeText}・PDF ${dpi} DPI${dpiNote}・已自動裁切多餘白邊`;
 }
 function removePageGuides(root){root.querySelectorAll('[data-page-guide="1"]').forEach(n=>n.remove())}
 function updatePageGuides(){
@@ -2761,23 +2771,32 @@ function updatePageGuides(){
     }
   }
 }
-function exportSvgString(slice=null){
+function exportSvgString(slice=null,rasterWidth=null,rasterHeight=null){
   const c=svg.cloneNode(true);removePageGuides(c);c.setAttribute("xmlns",NS);
   const b=slice||exportBounds;
-  c.setAttribute("viewBox",`${b.x} ${b.y} ${b.w} ${b.h}`);c.setAttribute("width",Math.max(1,Math.round(b.w)));c.setAttribute("height",Math.max(1,Math.round(b.h)));
+  c.setAttribute("viewBox",`${b.x} ${b.y} ${b.w} ${b.h}`);
+  const w=Math.max(1,Math.round(Number(rasterWidth)||b.w));
+  const h=Math.max(1,Math.round(Number(rasterHeight)||b.h));
+  c.setAttribute("width",w);c.setAttribute("height",h);
   c.querySelectorAll("text").forEach(x=>{if(!x.getAttribute("font-family"))x.setAttribute("font-family",FONT_FAMILIES.default.css)});
   const bg=el("rect",{x:b.x,y:b.y,width:b.w,height:b.h,fill:"#ffffff"});c.insertBefore(bg,c.firstChild);
   return new XMLSerializer().serializeToString(c);
 }
-async function exportImage(){
-  return new Promise((resolve,reject)=>{const u=URL.createObjectURL(new Blob([exportSvgString()],{type:"image/svg+xml;charset=utf-8"})),img=new Image();img.onload=()=>{URL.revokeObjectURL(u);resolve(img)};img.onerror=()=>{URL.revokeObjectURL(u);reject(new Error("SVG image load failed"))};img.src=u});
+async function exportImage(slice=null,rasterWidth=null,rasterHeight=null){
+  return new Promise((resolve,reject)=>{
+    const svgText=exportSvgString(slice,rasterWidth,rasterHeight);
+    const u=URL.createObjectURL(new Blob([svgText],{type:"image/svg+xml;charset=utf-8"})),img=new Image();
+    img.onload=()=>{URL.revokeObjectURL(u);resolve(img)};
+    img.onerror=()=>{URL.revokeObjectURL(u);reject(new Error("SVG image load failed"))};
+    img.src=u;
+  });
 }
 function pagePx(plan,dpi){return{w:Math.round(plan.mm.w/25.4*dpi),h:Math.round(plan.mm.h/25.4*dpi)}}
 function dataUrlBytes(url){const bin=atob((url.split(",")[1]||"")),out=new Uint8Array(bin.length);for(let i=0;i<bin.length;i++)out[i]=bin.charCodeAt(i);return out}
 function asciiBytes(s){const out=new Uint8Array(s.length);for(let i=0;i<s.length;i++)out[i]=s.charCodeAt(i)&255;return out}
 function concatBytes(parts){const len=parts.reduce((s,p)=>s+p.length,0),out=new Uint8Array(len);let o=0;for(const p of parts){out.set(p,o);o+=p.length}return out}
 async function renderPdfPages(plan){
-  const img=await exportImage(),dpi=safePdfDpi(plan),size=pagePx(plan,dpi),pages=[];
+  const dpi=safePdfDpi(plan),size=pagePx(plan,dpi),pages=[];
   for(let i=0;i<plan.pages.length;i++){
     const slice=plan.pages[i],c=document.createElement("canvas");c.width=size.w;c.height=size.h;
     const ctx=c.getContext("2d",{alpha:false});ctx.fillStyle="#ffffff";ctx.fillRect(0,0,c.width,c.height);
@@ -2787,11 +2806,17 @@ async function renderPdfPages(plan){
     if(i>0){ctx.fillStyle="#64748b";ctx.font=`700 ${hintPx}px ${FONT_FAMILIES.default.css}`;ctx.textAlign="center";ctx.textBaseline="top";ctx.fillText(`← 接第 ${i} 頁`,c.width/2,top);top+=Math.round(hintPx*1.5)}
     const bottomHint=i<plan.pages.length-1?Math.round(hintPx*1.8):0;
     const availW=c.width-margin*2,availH=c.height-margin-top-bottomHint;
-    const sx=(slice.x-exportBounds.x)/exportBounds.w*img.naturalWidth,sy=(slice.y-exportBounds.y)/exportBounds.h*img.naturalHeight,sw=slice.w/exportBounds.w*img.naturalWidth,sh=slice.h/exportBounds.h*img.naturalHeight;
-    const k=Math.min(availW/slice.w,availH/slice.h),dw=slice.w*k,dh=slice.h*k,dx=margin+(availW-dw)/2,dy=top+(availH-dh)/2;
-    ctx.drawImage(img,sx,sy,sw,sh,dx,dy,dw,dh);
+    const k=Math.min(availW/slice.w,availH/slice.h),dw=Math.max(1,Math.round(slice.w*k)),dh=Math.max(1,Math.round(slice.h*k));
+    const dx=Math.round(margin+(availW-dw)/2),dy=Math.round(top+(availH-dh)/2);
+
+    // 直接把 SVG 以 PDF 頁面實際需要的像素尺寸重新渲染。
+    // 不再先產生低解析整圖再放大，因此節點文字與線條放大後會清楚很多。
+    const img=await exportImage(slice,dw,dh);
+    ctx.drawImage(img,0,0,img.naturalWidth,img.naturalHeight,dx,dy,dw,dh);
+
     if(i<plan.pages.length-1){ctx.fillStyle="#64748b";ctx.font=`700 ${hintPx}px ${FONT_FAMILIES.default.css}`;ctx.textAlign="center";ctx.textBaseline="bottom";ctx.fillText(`→ 接第 ${i+2} 頁`,c.width/2,c.height-margin)}
     pages.push({bytes:dataUrlBytes(c.toDataURL("image/jpeg",plan.pdfQuality)),width:c.width,height:c.height});
+    img.src="";
     c.width=1;c.height=1;
     await new Promise(r=>setTimeout(r,0));
   }
@@ -2805,7 +2830,8 @@ function renderExportPreview(){
   const plan=makePagePlan();
   pagesBox.innerHTML="";
   const dpi=safePdfDpi(plan);
-  summary.textContent=`${plan.orientation==="landscape"?"A4 橫式":"A4 直式"}・${plan.mode==="single"?"單頁縮放":`自動多頁模式・目前 ${plan.pages.length} 頁${plan.pages.length===1?"（內容可容納於單頁）":""}`}・邊界 ${plan.marginMm} mm・PDF ${dpi} DPI`;
+  const dpiNote=dpi<plan.pdfDpi?`（原設定 ${plan.pdfDpi} DPI，已啟用記憶體保護）`:"";
+  summary.textContent=`${plan.orientation==="landscape"?"A4 橫式":"A4 直式"}・${plan.mode==="single"?"單頁全圖（文字可能縮小）":`閱讀清晰・自動多頁 ${plan.pages.length} 頁${plan.pages.length===1?"（目前可容納於單頁）":""}`}・邊界 ${plan.marginMm} mm・PDF ${dpi} DPI${dpiNote}`;
 
   plan.pages.forEach((slice,i)=>{
     const card=document.createElement("div");
@@ -2881,13 +2907,13 @@ function jpegPagesToPdf(jpegs,orientation){
   const xrefOffset=offset;let xref=`xref\n0 ${maxObj+1}\n0000000000 65535 f \n`;for(let i=1;i<=maxObj;i++)xref+=`${String(offsets[i]).padStart(10,"0")} 00000 n \n`;xref+=`trailer\n<< /Size ${maxObj+1} /Root 1 0 R >>\nstartxref\n${xrefOffset}\n%%EOF`;parts.push(asciiBytes(xref));return new Blob([concatBytes(parts)],{type:"application/pdf"});
 }
 function projectData(){
-  const ex=exportSettings();return{app:"SmartFlow",version:"1.9.5.2",savedAt:new Date().toISOString(),source:source.value,inputMode:$("#inputMode").value,direction:direction.value,scale:Number(scale.value),flowTheme:flowThemeKey,nodes,positions,typography:{globalFontKey,globalFontSize,branchLabelFontKey,branchLabelFontSize},routing:{globalLineWidth,routingPadding,routingMode},export:{orientation:ex.orientation,mode:ex.mode,marginMm:ex.marginMm,title:ex.title,titleSize:ex.titleSize,titleFont:ex.titleFont,titleAlign:ex.titleAlign,pngScale:ex.pngScale,pdfQuality:ex.pdfQuality,overlap:ex.overlap,showGuides:ex.showGuides}};
+  const ex=exportSettings();return{app:"SmartFlow",version:"1.9.5.3",savedAt:new Date().toISOString(),source:source.value,inputMode:$("#inputMode").value,direction:direction.value,scale:Number(scale.value),flowTheme:flowThemeKey,nodes,positions,typography:{globalFontKey,globalFontSize,branchLabelFontKey,branchLabelFontSize},routing:{globalLineWidth,routingPadding,routingMode},export:{orientation:ex.orientation,mode:ex.mode,marginMm:ex.marginMm,title:ex.title,titleSize:ex.titleSize,titleFont:ex.titleFont,titleAlign:ex.titleAlign,pngScale:ex.pngScale,pdfDpi:ex.pdfDpi,pdfQuality:ex.pdfQuality,overlap:ex.overlap,showGuides:ex.showGuides}};
 }
 function applyProjectData(d){
   if(!d||!Array.isArray(d.nodes))throw new Error("invalid project");nodes=d.nodes;positions=d.positions||{};source.value=d.source||"";$("#inputMode").value=["smart","easy","natural"].includes(d.inputMode)?d.inputMode:"smart";direction.value=d.direction==="horizontal"?"horizontal":"vertical";scale.value=Math.max(55,Math.min(180,Number(d.scale)||100));scaleValue.textContent=scale.value+"%";flowThemeKey=FLOW_THEMES[d.flowTheme]?d.flowTheme:"chartGenerator";$("#flowTheme").value=flowThemeKey;renderSwatches();
   if(d.typography){globalFontKey=validFontKey(d.typography.globalFontKey)?d.typography.globalFontKey:"default";globalFontSize=clampFontSize(d.typography.globalFontSize)||16;branchLabelFontKey=d.typography.branchLabelFontKey==="follow"?"follow":(validFontKey(d.typography.branchLabelFontKey)?d.typography.branchLabelFontKey:"follow");branchLabelFontSize=Math.max(9,Math.min(32,Number(d.typography.branchLabelFontSize)||11));$("#globalFontFamily").value=globalFontKey;$("#globalFontSize").value=globalFontSize;$("#branchLabelFont").value=branchLabelFontKey;$("#branchLabelSize").value=branchLabelFontSize}
   if(d.routing){globalLineWidth=Math.max(1,Math.min(6,Number(d.routing.globalLineWidth)||2.25));routingPadding=Math.max(8,Math.min(60,Number(d.routing.routingPadding)||18));routingMode=d.routing.routingMode==="simple"?"simple":"smart";$("#globalLineWidth").value=globalLineWidth;$("#routingPadding").value=routingPadding;$("#routingMode").value=routingMode}
-  const ex=d.export||d.print||{};$("#printOrientation").value=["auto","portrait","landscape"].includes(ex.orientation)?ex.orientation:(ex.orientation==="landscape"?"landscape":"auto");$("#printFit").value=(ex.mode==="multipage"||ex.fit==="multipage")?"multipage":"single";$("#pageMargin").value=["6","10","15","20"].includes(String(ex.marginMm))?String(ex.marginMm):"10";$("#printTitle").value=ex.title||"流程圖";$("#titleFontSize").value=Math.max(12,Math.min(40,Number(ex.titleSize)||22));$("#titleFontFamily").value=validFontKey(ex.titleFont)?ex.titleFont:"default";$("#titleAlign").value=["left","center","right"].includes(ex.titleAlign)?ex.titleAlign:"center";$("#pngScale").value=["1","2","4"].includes(String(ex.pngScale))?String(ex.pngScale):"2";$("#pdfQuality").value=["0.86","0.92","0.97"].includes(String(ex.pdfQuality))?String(ex.pdfQuality):"0.92";$("#pageOverlap").value=["0","16","32"].includes(String(ex.overlap))?String(ex.overlap):"16";$("#pageGuideMode").value=ex.showGuides===false?"hide":"show";
+  const ex=d.export||d.print||{};$("#printOrientation").value=["auto","portrait","landscape"].includes(ex.orientation)?ex.orientation:(ex.orientation==="landscape"?"landscape":"auto");$("#printFit").value=ex.mode==="single"?"single":"multipage";$("#pageMargin").value=["6","10","15","20"].includes(String(ex.marginMm))?String(ex.marginMm):"6";$("#printTitle").value=ex.title||"流程圖";$("#titleFontSize").value=Math.max(12,Math.min(40,Number(ex.titleSize)||22));$("#titleFontFamily").value=validFontKey(ex.titleFont)?ex.titleFont:"default";$("#titleAlign").value=["left","center","right"].includes(ex.titleAlign)?ex.titleAlign:"center";$("#pngScale").value=["1","2","4"].includes(String(ex.pngScale))?String(ex.pngScale):"2";$("#pdfDpi").value=["180","240","300"].includes(String(ex.pdfDpi))?String(ex.pdfDpi):"300";$("#pdfQuality").value=["0.86","0.92","0.97"].includes(String(ex.pdfQuality))?String(ex.pdfQuality):"0.97";$("#pageOverlap").value=["0","16","32"].includes(String(ex.overlap))?String(ex.overlap):"16";$("#pageGuideMode").value=ex.showGuides===false?"hide":"show";
   fitMode=true;viewZoom=1;resetPan();renderInputGuide();updateLeftPanelScrollHeight();renderEditor();render();runAudit();syncHistory();updateExportSummary();
 }
 function storageGet(){try{return localStorage.getItem(AUTOSAVE_KEY)}catch{return null}}
@@ -3176,8 +3202,8 @@ $("#centerBtn").addEventListener("click",()=>{resetPan();applyViewport();msg("�
 window.addEventListener("resize",applyViewport);
 
 $("#svgBtn").addEventListener("click",()=>{if(!nodes.length)return msg("目前沒有流程圖");const name=safeFilename($("#printTitle").value);download(`${name}.svg`,new Blob([exportSvgString()],{type:"image/svg+xml;charset=utf-8"}));msg("SVG 已下載")});
-$("#pngBtn").addEventListener("click",async()=>{if(!nodes.length)return msg("目前沒有流程圖");try{msg("正在產生 PNG…");const img=await exportImage(),want=exportSettings().pngScale,maxPixels=60000000;let w=Math.max(1,Math.round(exportBounds.w*want)),h=Math.max(1,Math.round(exportBounds.h*want)),actual=want;if(w*h>maxPixels){const k=Math.sqrt(maxPixels/(w*h));w=Math.max(1,Math.round(w*k));h=Math.max(1,Math.round(h*k));actual=Math.round(actual*k*100)/100;msg("流程圖很大，PNG 已啟用記憶體保護")};const c=document.createElement("canvas");c.width=w;c.height=h;const x=c.getContext("2d",{alpha:false});x.fillStyle="#ffffff";x.fillRect(0,0,w,h);x.drawImage(img,0,0,w,h);c.toBlob(b=>{if(b)download(`${safeFilename($("#printTitle").value)}_${want}x.png`,b);msg(actual===want?`PNG ${want}× 已下載`:`PNG 已以安全解析度輸出`)} ,"image/png")}catch(e){console.error(e);msg("PNG 產生失敗，請改用 SVG")}});
-$("#pdfBtn").addEventListener("click",async()=>{if(!nodes.length)return msg("目前沒有流程圖");const btn=$("#pdfBtn");btn.disabled=true;try{const plan=makePagePlan(),dpi=safePdfDpi(plan);msg(`正在產生 PDF（${plan.pages.length} 頁 / ${dpi} DPI）…`);const r=await renderPdfPages(plan),pdf=jpegPagesToPdf(r.pages,plan.orientation);download(`${safeFilename(plan.title)}.pdf`,pdf);msg(`PDF 已下載，共 ${plan.pages.length} 頁${dpi<150?"，已使用安全解析度":""}`)}catch(e){console.error(e);msg("PDF 產生失敗，請降低 PDF 畫質或改用 SVG")}finally{btn.disabled=false}});
+$("#pngBtn").addEventListener("click",async()=>{if(!nodes.length)return msg("目前沒有流程圖");try{msg("正在產生 PNG…");const want=exportSettings().pngScale,maxPixels=60000000;let w=Math.max(1,Math.round(exportBounds.w*want)),h=Math.max(1,Math.round(exportBounds.h*want)),actual=want;if(w*h>maxPixels){const k=Math.sqrt(maxPixels/(w*h));w=Math.max(1,Math.round(w*k));h=Math.max(1,Math.round(h*k));actual=Math.round(actual*k*100)/100;msg("流程圖很大，PNG 已啟用記憶體保護")};const img=await exportImage(null,w,h),c=document.createElement("canvas");c.width=w;c.height=h;const x=c.getContext("2d",{alpha:false});x.fillStyle="#ffffff";x.fillRect(0,0,w,h);x.drawImage(img,0,0,img.naturalWidth,img.naturalHeight,0,0,w,h);c.toBlob(b=>{if(b)download(`${safeFilename($("#printTitle").value)}_${want}x.png`,b);msg(actual===want?`PNG ${want}× 已下載`:`PNG 已以安全解析度輸出`)} ,"image/png")}catch(e){console.error(e);msg("PNG 產生失敗，請改用 SVG")}});
+$("#pdfBtn").addEventListener("click",async()=>{if(!nodes.length)return msg("目前沒有流程圖");const btn=$("#pdfBtn");btn.disabled=true;try{const plan=makePagePlan(),dpi=safePdfDpi(plan);msg(`正在產生高解析 PDF（${plan.pages.length} 頁 / ${dpi} DPI）…`);const r=await renderPdfPages(plan),pdf=jpegPagesToPdf(r.pages,plan.orientation);download(`${safeFilename(plan.title)}.pdf`,pdf);msg(`PDF 已下載，共 ${plan.pages.length} 頁 / ${r.dpi} DPI${r.dpi<plan.pdfDpi?"（已啟用記憶體保護）":""}`)}catch(e){console.error(e);msg("PDF 產生失敗，請降低 PDF 解析度或改用 SVG")}finally{btn.disabled=false}});
 $("#jsonBtn").addEventListener("click",()=>{const d=projectData();download(`${safeFilename(d.export.title)}_專案.json`,new Blob([JSON.stringify(d,null,2)],{type:"application/json;charset=utf-8"}));msg("JSON 已備份")});
 $("#importBtn").addEventListener("click",()=>$("#jsonFile").click());
 $("#jsonFile").addEventListener("change",async e=>{const f=e.target.files?.[0];if(!f)return;try{const d=JSON.parse(await f.text());saveHistory();applyProjectData(d);autosaveReady=true;flushAutosave();msg("專案已匯入並建立自動儲存") }catch(err){console.error(err);msg("JSON 格式不正確")}e.target.value=""});
@@ -3196,7 +3222,7 @@ $("#closeExportModalBtn").addEventListener("click",()=>$("#exportModal").classLi
 $("#exportModal").addEventListener("click",e=>{if(e.target===$("#exportModal"))$("#exportModal").classList.add("hidden")});
 $("#previewPdfBtn").addEventListener("click",()=>{$("#exportModal").classList.add("hidden");$("#pdfBtn").click()});
 
-["printOrientation","printFit","pageMargin","titleFontSize","titleFontFamily","titleAlign","pngScale","pdfQuality","pageOverlap","pageGuideMode"].forEach(id=>{$("#"+id).addEventListener("change",()=>{updatePageGuides();updateExportSummary();refreshExportPreviewIfOpen();scheduleAutosave()})});
+["printOrientation","printFit","pageMargin","titleFontSize","titleFontFamily","titleAlign","pngScale","pdfDpi","pdfQuality","pageOverlap","pageGuideMode"].forEach(id=>{$("#"+id).addEventListener("change",()=>{updatePageGuides();updateExportSummary();refreshExportPreviewIfOpen();scheduleAutosave()})});
 $("#printTitle").addEventListener("input",()=>{updateExportSummary();refreshExportPreviewIfOpen();scheduleAutosave()});
 window.addEventListener("beforeunload",flushAutosave);
 
@@ -3262,7 +3288,7 @@ $("#resetTypographyBtn").addEventListener("click",()=>{
   renderEditor();render();msg("已恢復整體文字預設");
 });
 
-["direction","scale","inputMode","printOrientation","printFit","pageMargin","printTitle","titleFontSize","titleFontFamily","titleAlign","pngScale","pdfQuality","pageOverlap","pageGuideMode"].forEach(id=>{
+["direction","scale","inputMode","printOrientation","printFit","pageMargin","printTitle","titleFontSize","titleFontFamily","titleAlign","pngScale","pdfDpi","pdfQuality","pageOverlap","pageGuideMode"].forEach(id=>{
   const c=$("#"+id);if(!c)return;
   c.addEventListener("focus",()=>{if(c.dataset.historyArmed)return;c.dataset.historyArmed="1";saveHistory()});
   c.addEventListener("blur",()=>{delete c.dataset.historyArmed});

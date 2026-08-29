@@ -1,12 +1,15 @@
-# GitHub Pages 部署
+# GitHub Pages 更新方式
 
-1. 將本 ZIP 解壓縮。
-2. 把所有檔案上傳到 GitHub Repository 根目錄。
-3. Repository 預設分支使用 `main`。
-4. 到 `Settings → Pages`。
-5. `Build and deployment → Source` 選擇 `GitHub Actions`。
-6. 等待 `Deploy GitHub Pages` 完成。
+如果你原本的 SmartFlowGenerator 已經上線：
 
-例如 Repository 名稱為 `SmartFlowGenerator`：
+最簡單只需要更新：
+- `index.html`
+- `README.md`
 
-`https://chopper-coder.github.io/SmartFlowGenerator/`
+`assets/dog-mascot-logo.png` 沒有更換可以不用重新上傳。
+
+如果使用 Deploy from a branch：
+上傳到 main 根目錄後，等待 GitHub Pages 自動更新即可。
+
+網站：
+https://chopper-coder.github.io/SmartFlowGenerator/
