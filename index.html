@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="color-scheme" content="light dark">
-<title>智慧流程圖產生器 V1.9.5.3</title>
+<title>智慧流程圖產生器 V1.9.8.1</title>
 <style>
 :root{
   --bg:#fff8fc;
@@ -482,17 +482,33 @@ input[type="range"]{accent-color:var(--accent)!important}
   .example-picker .btn{width:100%}
 }
 
+
+#wordPngBtn{box-shadow:0 7px 18px rgba(239,159,194,.18)}
+
+.readability-warning{
+  margin-top:9px;padding:9px 11px;border:1px solid var(--line);border-radius:12px;
+  background:#fff;color:var(--muted);font-size:12px;line-height:1.55
+}
+.readability-warning.good{background:var(--soft-mint);border-color:#bfe8c8;color:#3f7d61}
+.readability-warning.warn{background:var(--soft-yellow);border-color:#ead18b;color:#80672f}
+.readability-warning.bad{background:#fff0f3;border-color:#efb6c5;color:#a44562}
+.word-preview-card{width:min(900px,100%);margin:0 auto}
+.word-preview-paper{background:#fff;border:2px dashed #ef9fc2;border-radius:12px;padding:0;overflow:hidden;box-shadow:0 5px 18px rgba(75,56,80,.08)}
+.word-preview-paper svg{display:block;width:100%;height:auto;background:#fff}
+.word-preview-meta{margin-bottom:8px;color:var(--muted);font-size:12px;font-weight:800}
+#wordSvgBtn{box-shadow:0 7px 18px rgba(239,159,194,.18)}
+
 </style>
 </head>
 <body>
 <div class="app" id="app">
   <div class="header">
     <div class="brand">
-      <div class="mascot app-logo" title="智慧流程圖產生器 V1.9.5.3">
-        <img src="assets/dog-mascot-logo.png" alt="智慧流程圖產生器 V1.9.5.3 LOGO">
+      <div class="mascot app-logo" title="智慧流程圖產生器 V1.9.8.1">
+        <img src="assets/dog-mascot-logo.png" alt="智慧流程圖產生器 V1.9.8.1 LOGO">
       </div>
       <div class="title">
-        <h1>智慧流程圖產生器 V1.9.5.3</h1>
+        <h1>智慧流程圖產生器 V1.9.8.1</h1>
       </div>
     </div>
     <div class="badge" id="statusBadge">🐾 準備完成</div>
@@ -628,7 +644,7 @@ input[type="range"]{accent-color:var(--accent)!important}
           <span class="tool-section-note">配色／縮放</span>
         </summary>
         <div class="tool-section-body">
-<div class="options">
+<div class="options three">
         <label>
           <span>流程圖配色</span>
           <select id="flowTheme">
@@ -639,6 +655,15 @@ input[type="range"]{accent-color:var(--accent)!important}
             <option value="softReport">柔和報表</option>
           </select>
           <div class="color-row" id="themeSwatches"></div>
+        </label>
+        <label>
+          <span>排版密度</span>
+          <select id="layoutDensity">
+            <option value="smart" selected>智慧最佳化（推薦）</option>
+            <option value="compact">緊湊固定</option>
+            <option value="standard">標準寬度</option>
+          </select>
+          <div class="help" id="layoutDensityHelp">智慧最佳化會依節點、判斷、平行與回圈複雜度自動縮排，再交由防碰撞修正。</div>
         </label>
         <label>
           <span>畫面縮放</span>
@@ -734,20 +759,20 @@ input[type="range"]{accent-color:var(--accent)!important}
       <details class="tool-section export-tools" data-tool-key="export">
         <summary>
           <span class="tool-section-title"><span class="fold-chevron">▶</span>輸出與資料安全</span>
-          <span class="tool-section-note">PDF／PNG／備份</span>
+          <span class="tool-section-note">PDF／Word／備份</span>
         </summary>
         <div class="tool-section-body">
 <div class="export-panel">
-        <div class="section-title" style="font-size:14px;margin-bottom:6px">專業輸出與資料安全</div>
-        <div class="help">長流程建議使用「閱讀清晰」自動分頁，避免整張流程圖硬縮成一頁。PDF 會以真正高解析重新渲染，放大查看文字會更清楚；大型 PDF 仍會自動啟用記憶體保護。</div>
+        <div class="section-title" style="font-size:14px;margin-bottom:6px">PDF／Word 輸出與資料安全</div>
+        <div class="help">輸出簡化為 PDF、Word 與 PNG。Word 版本固定以 A4 為基準，自動選擇直式或橫式；PNG 會高解析輸出並自動緊密裁切。PDF 會智慧合併尾頁，避免第二頁只剩一個節點。</div>
         <div class="export-grid" style="margin-top:10px">
           <label><span>A4 方向</span><select id="printOrientation"><option value="auto">自動判斷</option><option value="portrait">A4 直式</option><option value="landscape">A4 橫式</option></select></label>
           <label><span>頁面模式</span><select id="printFit"><option value="multipage" selected>閱讀清晰（推薦，自動多頁）</option><option value="single">單頁全圖（可能字較小）</option></select></label>
-          <label><span>頁面邊界</span><select id="pageMargin"><option value="6" selected>窄 6 mm（推薦）</option><option value="10">標準 10 mm</option><option value="15">寬 15 mm</option><option value="20">超寬 20 mm</option></select></label>
+          <label><span>頁面邊界</span><select id="pageMargin"><option value="3" selected>極窄 3 mm（推薦）</option><option value="6">窄 6 mm</option><option value="10">標準 10 mm</option></select></label>
         </div>
         <div class="export-grid four" style="margin-top:9px">
           <label><span>PDF 標題</span><input id="printTitle" type="text" value="流程圖"></label>
-          <label><span>標題大小</span><input id="titleFontSize" type="number" min="12" max="40" step="1" value="22"></label>
+          <label><span>標題大小</span><input id="titleFontSize" type="number" min="12" max="40" step="1" value="18"></label>
           <label><span>標題字型</span><select id="titleFontFamily"><option value="default">微軟正黑體</option><option value="mingliu">新細明體</option><option value="kai">標楷體</option><option value="arial">Arial</option><option value="georgia">Georgia</option></select></label>
           <label><span>標題對齊</span><select id="titleAlign"><option value="center">置中</option><option value="left">靠左</option><option value="right">靠右</option></select></label>
         </div>
@@ -759,8 +784,10 @@ input[type="range"]{accent-color:var(--accent)!important}
         </div>
         <div class="export-grid" style="margin-top:9px">
           <label><span>預覽分頁線</span><select id="pageGuideMode"><option value="show" selected>顯示</option><option value="hide">隱藏</option></select></label>
-          <div></div><div></div>
+          <label class="hidden"><span>Word 裁切邊界</span><select id="wordCropMode"><option value="tight" selected>更緊（推薦）</option><option value="standard">標準</option><option value="roomy">保留空間</option></select></label>
+          <div></div>
         </div>
+        <div class="readability-warning" id="readabilityWarning">完成流程圖後會估算 PDF 文字大小。</div>
         <div class="export-summary" id="exportSummary">完成流程圖後會顯示建議方向、頁數與 PDF 安全畫質。</div>
       </div>
         </div>
@@ -784,12 +811,18 @@ input[type="range"]{accent-color:var(--accent)!important}
       </div>
 
       <div class="toolbar" style="margin-top:12px">
-        <button class="btn secondary" id="exportPreviewBtn" type="button">輸出預覽</button>
-        <button class="btn" id="svgBtn" type="button">下載 SVG</button>
-        <button class="btn" id="pngBtn" type="button">下載 PNG</button>
+        <button class="btn secondary" id="exportPreviewBtn" type="button">PDF 輸出預覽</button>
         <button class="btn secondary" id="pdfBtn" type="button">下載 PDF</button>
-        <button class="btn" id="jsonBtn" type="button">備份 JSON</button>
-        <button class="btn" id="importBtn" type="button">匯入 JSON</button>
+        <button class="btn primary" id="wordExportBtn" type="button">Word 版本輸出</button>
+        <button class="btn secondary" id="tightPngBtn" type="button">輸出PNG檔案</button>
+        <button class="btn" id="jsonBtn" type="button">專案備份 JSON</button>
+        <button class="btn" id="importBtn" type="button">匯入專案 JSON</button>
+
+        <button class="hidden" id="wordPreviewBtn" type="button" tabindex="-1" aria-hidden="true">Word preview</button>
+        <button class="hidden" id="wordSvgBtn" type="button" tabindex="-1" aria-hidden="true">Word svg</button>
+        <button class="hidden" id="wordPngBtn" type="button" tabindex="-1" aria-hidden="true">Word png</button>
+        <button class="hidden" id="svgBtn" type="button" tabindex="-1" aria-hidden="true">svg</button>
+        <button class="hidden" id="pngBtn" type="button" tabindex="-1" aria-hidden="true">png</button>
         <input id="jsonFile" type="file" accept=".json,application/json" class="hidden">
       </div>
       <div class="status" id="message"></div><div class="help" id="autosaveStatus">自動儲存：待命</div>
@@ -826,13 +859,17 @@ input[type="range"]{accent-color:var(--accent)!important}
     </section>
   </div>
   <div class="footer">
-    智慧流程圖產生器 V1.9.5.3　｜　程式碼出處：
+    智慧流程圖產生器 V1.9.8.1　｜　程式碼出處：
     <a href="https://github.com/chopper-coder" target="_blank" rel="noopener noreferrer">https://github.com/chopper-coder</a>
   </div>
   <div class="export-modal hidden" id="exportModal" role="dialog" aria-modal="true" aria-labelledby="exportModalTitle">
     <div class="export-modal-panel">
       <div class="export-modal-head"><div><h2 class="section-title" id="exportModalTitle">PDF 輸出預覽</h2><div class="help" id="exportModalSummary"></div></div><button class="btn" id="closeExportModalBtn" type="button">關閉</button></div>
-      <div class="toolbar" style="margin-bottom:12px"><button class="btn secondary" id="previewPdfBtn" type="button">下載 PDF</button></div>
+      <div class="toolbar" style="margin-bottom:12px">
+        <button class="btn secondary" id="previewPdfBtn" type="button">下載 PDF</button>
+        <button class="btn primary hidden" id="previewWordSvgBtn" type="button">下載 Word SVG</button>
+        <button class="btn hidden" id="previewWordPngBtn" type="button">下載 Word PNG</button>
+      </div>
       <div class="export-pages" id="exportPages"></div>
     </div>
   </div>
@@ -848,7 +885,7 @@ const source=$("#source"),svg=$("#svg"),stage=$("#stage"),panLayer=$("#panLayer"
 
 const leftPanel=app.querySelector(".left-panel");
 
-const TOOL_SECTION_KEY="smartflow.v195.toolSections";
+const TOOL_SECTION_KEY="smartflow.v1981.toolSections";
 const toolSections=[...app.querySelectorAll("details.tool-section")];
 function readToolSectionState(){
   try{
@@ -911,7 +948,7 @@ let fitMode=true,viewZoom=1,canvasPanX=0,canvasPanY=0,panState=null,dragState=nu
 let canvasBounds={x:0,y:0,w:1200,h:800};
 let exportBounds={x:0,y:0,w:1200,h:800};
 let autosaveTimer=null,autosaveReady=false;
-const AUTOSAVE_KEY="smartflow.v1953.autosave";
+const AUTOSAVE_KEY="smartflow.v1981.autosave";
 
 const uid=()=>Math.random().toString(36).slice(2,10);
 const clone=v=>JSON.parse(JSON.stringify(v));
@@ -934,6 +971,64 @@ let branchLabelFontSize=11;
 let globalLineWidth=2.25;
 let routingPadding=18;
 let routingMode="smart";
+let layoutDensity="smart";
+function flowComplexityStats(){
+  const stats={nodes:0,decisions:0,parallels:0,loops:0,maxDepth:0};
+  const scan=(seq,depth=0)=>{
+    stats.maxDepth=Math.max(stats.maxDepth,depth);
+    for(const n of (seq||[])){
+      stats.nodes++;
+      if(n.type==="decision"){
+        stats.decisions++;
+        scan(n.yesSteps||[],depth+1);
+        scan(n.noSteps||[],depth+1);
+      }else if(n.type==="parallel"){
+        stats.parallels++;
+        (n.branches||[]).forEach(b=>scan(b,depth+1));
+      }else if(n.type==="loop"){
+        stats.loops++;
+      }
+    }
+  };
+  scan(nodes,0);
+  return stats;
+}
+function smartLayoutFactor(){
+  const s=flowComplexityStats();
+  const complexity=s.nodes+s.decisions*2.2+s.parallels*2.5+s.loops*1.4+s.maxDepth*2;
+  if(complexity<=12)return .68;
+  if(complexity<=24)return .76;
+  if(complexity<=42)return .84;
+  return .92;
+}
+function layoutSpacing(){
+  const compact={
+    normalGap:54,decisionTop:68,decisionMinGap:220,decisionNodePad:90,
+    decisionSpanFactor:.52,decisionSpanAdd:145,decisionMaxGap:440,
+    decisionMerge:56,decisionAfter:50,parallelTop:68,parallelMinWidth:195,
+    parallelWidthFactor:.90,parallelGap:46,parallelMerge:56,parallelAfter:50,
+    loopCorridor:76,loopLane:34
+  };
+  const standard={
+    normalGap:88,decisionTop:105,decisionMinGap:330,decisionNodePad:135,
+    decisionSpanFactor:.72,decisionSpanAdd:245,decisionMaxGap:650,
+    decisionMerge:90,decisionAfter:80,parallelTop:100,parallelMinWidth:250,
+    parallelWidthFactor:1.05,parallelGap:90,parallelMerge:90,parallelAfter:80,
+    loopCorridor:145,loopLane:56
+  };
+  if(layoutDensity==="standard")return standard;
+  if(layoutDensity==="compact")return compact;
+  const factor=smartLayoutFactor();
+  const scaled={};
+  Object.keys(compact).forEach(k=>{
+    const v=compact[k];
+    scaled[k]=typeof v==="number"?Math.max(1,Math.round(v*factor*100)/100):v;
+  });
+  scaled.decisionSpanFactor=.46+(.54-.46)*factor;
+  scaled.parallelWidthFactor=.82+(.92-.82)*factor;
+  return scaled;
+}
+
 let routingObstacles=[];
 let routingSegments=[];
 
@@ -1982,10 +2077,15 @@ function layoutSequence(state,seq,cx,startY,depth=0,branch=false){
     if(prevExit)state.edges.push({from:prevExit,to:entry,label:""});
 
     if(obj.type==="decision"){
-      const branchStart=cursor+m.h+105;
+      const sp=layoutSpacing();
+      const branchStart=cursor+m.h+sp.decisionTop;
       const leftSpan=estimateSequenceSpan(obj.yesSteps||[],depth+1);
       const rightSpan=estimateSequenceSpan(obj.noSteps||[],depth+1);
-      const gap=Math.max(330,m.w/2+135,Math.min(650,Math.max(leftSpan,rightSpan)*.72+245));
+      const gap=Math.max(
+        sp.decisionMinGap,
+        m.w/2+sp.decisionNodePad,
+        Math.min(sp.decisionMaxGap,Math.max(leftSpan,rightSpan)*sp.decisionSpanFactor+sp.decisionSpanAdd)
+      );
 
       const yes=layoutSequence(state,obj.yesSteps||[],cx-gap,branchStart,depth+1,true);
       const no=layoutSequence(state,obj.noSteps||[],cx+gap,branchStart,depth+1,true);
@@ -1995,7 +2095,7 @@ function layoutSequence(state,seq,cx,startY,depth=0,branch=false){
         no.endY||branchStart,
         branchStart+120
       );
-      const mergeY=baseEnd+90;
+      const mergeY=baseEnd+layoutSpacing().decisionMerge;
       const merge=virtualConnector({x:cx,y:mergeY},state.vertical);
 
       if(yes.first)state.edges.push({from:entry,to:yes.first,label:"是",branchSide:-1,branchEntry:true});
@@ -2011,16 +2111,17 @@ function layoutSequence(state,seq,cx,startY,depth=0,branch=false){
       terminal=continuing===0 && yes.terminal && no.terminal;
       prevExit=terminal?entry:merge;
       endY=mergeY;
-      cursor=mergeY+80;
+      cursor=mergeY+layoutSpacing().decisionAfter;
       if(terminal)break;
       continue;
     }
 
     if(obj.type==="parallel"){
       const branches=obj.branches||[];
-      const pStart=cursor+m.h+100;
-      const widths=branches.map(b=>Math.max(250,estimateSequenceSpan(b,depth+1)*1.05));
-      const gap=90;
+      const sp=layoutSpacing();
+      const pStart=cursor+m.h+sp.parallelTop;
+      const widths=branches.map(b=>Math.max(sp.parallelMinWidth,estimateSequenceSpan(b,depth+1)*sp.parallelWidthFactor));
+      const gap=sp.parallelGap;
       const total=widths.reduce((s,w)=>s+w,0)+gap*Math.max(0,widths.length-1);
       let x=cx-total/2;
       const results=[];
@@ -2032,7 +2133,7 @@ function layoutSequence(state,seq,cx,startY,depth=0,branch=false){
         if(r.first)state.edges.push({from:entry,to:r.first,label:"",branchEntry:true,branchSide:bx<cx?-1:1});
       });
 
-      const mergeY=Math.max(pStart+100,...results.map(r=>r.endY||pStart))+90;
+      const mergeY=Math.max(pStart+90,...results.map(r=>r.endY||pStart))+layoutSpacing().parallelMerge;
       const merge=virtualConnector({x:cx,y:mergeY},state.vertical);
       let continuing=0;
       results.forEach(r=>{
@@ -2042,7 +2143,7 @@ function layoutSequence(state,seq,cx,startY,depth=0,branch=false){
       terminal=branches.length>0&&continuing===0&&results.every(r=>r.terminal);
       prevExit=terminal?entry:merge;
       endY=mergeY;
-      cursor=mergeY+80;
+      cursor=mergeY+layoutSpacing().parallelAfter;
       if(terminal)break;
       continue;
     }
@@ -2050,7 +2151,7 @@ function layoutSequence(state,seq,cx,startY,depth=0,branch=false){
     prevExit=entry;
     terminal=obj.type==="end";
     endY=cursor+m.h;
-    cursor=endY+88;
+    cursor=endY+layoutSpacing().normalGap;
     if(terminal)break;
   }
 
@@ -2074,18 +2175,20 @@ function drawSmartLoop(from,target,lane=0){
   const vertical=direction.value==="vertical";
   if(vertical){
     const useRight=from.p.x>=target.p.x;
+    const sp=layoutSpacing();
     const corridor=useRight
-      ? Math.max(from.p.x+(from.m?.w||0)/2,target.p.x+target.m.w/2)+145+lane*56
-      : Math.min(from.p.x-(from.m?.w||0)/2,target.p.x-target.m.w/2)-145-lane*56;
+      ? Math.max(from.p.x+(from.m?.w||0)/2,target.p.x+target.m.w/2)+sp.loopCorridor+lane*sp.loopLane
+      : Math.min(from.p.x-(from.m?.w||0)/2,target.p.x-target.m.w/2)-sp.loopCorridor-lane*sp.loopLane;
     const sx=from.virtual?from.p.x:from.p.x+(useRight?(from.m.w/2):-(from.m.w/2));
     const sy=from.p.y;
     const tx=target.p.x+(useRight?target.m.w/2:-target.m.w/2);
     arrow([{x:sx,y:sy},{x:corridor,y:sy},{x:corridor,y:target.p.y},{x:tx,y:target.p.y}],"回到",{stroke:theme().loopStroke,dash:true,width:2.3,labelColor:theme().loopStroke});
   }else{
     const useBottom=from.p.y>=target.p.y;
+    const sp=layoutSpacing();
     const corridor=useBottom
-      ? Math.max(from.p.y+(from.m?.h||0)/2,target.p.y+target.m.h/2)+135+lane*56
-      : Math.min(from.p.y-(from.m?.h||0)/2,target.p.y-target.m.h/2)-135-lane*56;
+      ? Math.max(from.p.y+(from.m?.h||0)/2,target.p.y+target.m.h/2)+sp.loopCorridor+lane*sp.loopLane
+      : Math.min(from.p.y-(from.m?.h||0)/2,target.p.y-target.m.h/2)-sp.loopCorridor-lane*sp.loopLane;
     const sx=from.p.x,sy=from.virtual?from.p.y:from.p.y+(useBottom?from.m.h/2:-from.m.h/2);
     const ty=target.p.y+(useBottom?target.m.h/2:-target.m.h/2);
     arrow([{x:sx,y:sy},{x:sx,y:corridor},{x:target.p.x,y:corridor},{x:target.p.x,y:ty}],"回到",{stroke:theme().loopStroke,dash:true,width:2.3,labelColor:theme().loopStroke});
@@ -2212,7 +2315,8 @@ function render(){
   requestAnimationFrame(()=>{
     try{
       const b=svg.getBBox();
-      const exportPad=Math.max(28,Math.min(60,Math.max(b.width,b.height)*.018));
+      // 下載輸出採緊密裁切；操作畫布仍保留原本較大的工作空間。
+      const exportPad=Math.max(8,Math.min(18,Math.max(b.width,b.height)*.0075));
       exportBounds={x:b.x-exportPad,y:b.y-exportPad,w:b.width+exportPad*2,h:b.height+exportPad*2};
       const pad=Math.max(135,Math.min(260,Math.max(b.width,b.height)*.048));
       canvasBounds={x:b.x-pad,y:b.y-pad,w:b.width+pad*2,h:b.height+pad*2};
@@ -2664,9 +2768,9 @@ function exportSettings(){
   return{
     orientation,
     mode:$("#printFit").value==="multipage"?"multipage":"single",
-    marginMm:Math.max(4,Math.min(25,Number($("#pageMargin").value)||10)),
+    marginMm:Math.max(3,Math.min(10,Number($("#pageMargin").value)||3)),
     title:clean($("#printTitle").value)||"流程圖",
-    titleSize:Math.max(12,Math.min(40,Number($("#titleFontSize").value)||22)),
+    titleSize:Math.max(12,Math.min(40,Number($("#titleFontSize").value)||18)),
     titleFont:validFontKey($("#titleFontFamily").value)?$("#titleFontFamily").value:"default",
     titleAlign:["left","center","right"].includes($("#titleAlign").value)?$("#titleAlign").value:"center",
     pngScale:[1,2,4].includes(Number($("#pngScale").value))?Number($("#pngScale").value):2,
@@ -2729,6 +2833,47 @@ function makePagePlan(){
     }
   }
   if(!pages.length)pages.push({x:exportBounds.x,y:exportBounds.y,w:exportBounds.w,h:exportBounds.h,title:true,index:0});
+
+  // 尾頁智慧合併：
+  // 若最後一頁只剩少量節點（常見是只有「結束」），且合併後文字仍可讀，
+  // 就把最後一頁併回前一頁，避免出現幾乎空白的第二頁。
+  if(pages.length>1){
+    const axis=direction.value==="horizontal"?"x":"y";
+    const intervals=nodeIntervals(axis);
+    const countInPage=p=>intervals.filter(r=>{
+      const a=axis==="y"?p.y:p.x,b=a+(axis==="y"?p.h:p.w);
+      return r.end>a&&r.start<b;
+    }).length;
+    let changed=true;
+    while(changed&&pages.length>1){
+      changed=false;
+      const last=pages[pages.length-1],prev=pages[pages.length-2];
+      const tailNodes=countInPage(last);
+      const merged=axis==="y"
+        ? {x:prev.x,y:prev.y,w:prev.w,h:(last.y+last.h)-prev.y,title:prev.title,index:prev.index}
+        : {x:prev.x,y:prev.y,w:(last.x+last.w)-prev.x,h:prev.h,title:prev.title,index:prev.index};
+
+      const usableW=contentW;
+      const usableH=Math.max(30,contentH-(merged.title?titleMm:0));
+      const scaleMm=Math.min(
+        usableW/Math.max(1,merged.w),
+        usableH/Math.max(1,merged.h)
+      );
+      const estPt=minDiagramFontSize()*scaleMm*72/25.4;
+      const tailRatio=(axis==="y"?last.h:last.w)/Math.max(1,(axis==="y"?prev.h:prev.w));
+
+      // 只有 1~2 個節點時積極合併；其餘尾頁很短時也合併。
+      const canMerge=(tailNodes<=1&&estPt>=7.4) ||
+                     (tailNodes<=2&&estPt>=8.0) ||
+                     (tailRatio<.20&&estPt>=8.4);
+      if(canMerge){
+        pages.splice(pages.length-2,2,merged);
+        pages.forEach((p,i)=>{p.index=i;p.title=i===0});
+        changed=true;
+      }
+    }
+  }
+
   return{...cfg,orientation,mm,pages};
 }
 function safePdfDpi(plan){
@@ -2744,13 +2889,63 @@ function safePdfDpi(plan){
 
   return Math.max(180,dpi);
 }
+
+function minDiagramFontSize(){
+  const values=[];
+  svg.querySelectorAll('g[data-dragkey] text').forEach(t=>{
+    const n=Number(t.getAttribute("font-size"));
+    if(Number.isFinite(n)&&n>0)values.push(n);
+  });
+  if(!values.length){
+    svg.querySelectorAll('text:not([data-page-guide="1"])').forEach(t=>{
+      const n=Number(t.getAttribute("font-size"));
+      if(Number.isFinite(n)&&n>0)values.push(n);
+    });
+  }
+  return values.length?Math.min(...values):Math.max(10,Number(globalFontSize)||16);
+}
+function estimatePdfTextPt(plan){
+  const baseFont=minDiagramFontSize();
+  const contentW=plan.mm.w-plan.marginMm*2;
+  const contentH=plan.mm.h-plan.marginMm*2;
+  const titleMm=Math.max(8,plan.titleSize*.48+4);
+  let worst=Infinity;
+  for(let i=0;i<plan.pages.length;i++){
+    const slice=plan.pages[i];
+    const hints=(i>0?5:0)+(i<plan.pages.length-1?5:0);
+    const usableH=Math.max(20,contentH-(slice.title?titleMm:0)-hints);
+    const scaleMm=Math.min(contentW/Math.max(1,slice.w),usableH/Math.max(1,slice.h));
+    worst=Math.min(worst,baseFont*scaleMm*72/25.4);
+  }
+  return Number.isFinite(worst)?worst:0;
+}
+function updateReadabilityWarning(){
+  const box=$("#readabilityWarning");
+  if(!box)return;
+  box.className="readability-warning";
+  if(!nodes.length){box.textContent="完成流程圖後會估算 PDF 文字大小。";return}
+  const plan=makePagePlan(),pt=estimatePdfTextPt(plan);
+  const text=`預估 PDF 最小節點文字約 ${pt.toFixed(1)} pt。`;
+  if(pt>=10){
+    box.classList.add("good");
+    box.textContent=`✓ ${text} 閱讀性良好。`;
+  }else if(pt>=8){
+    box.classList.add("warn");
+    box.textContent=`△ ${text} 還能閱讀，但建議使用自動多頁或 Word 版本輸出。`;
+  }else{
+    box.classList.add("bad");
+    box.textContent=`⚠ ${text} 可能太小。建議改用自動多頁、橫式，或 Word 版本輸出。`;
+  }
+}
+
 function updateExportSummary(){
   const box=$("#exportSummary");if(!box)return;
-  if(!nodes.length){box.textContent="完成流程圖後會顯示建議方向、頁數與 PDF 安全畫質。";return}
+  if(!nodes.length){box.textContent="完成流程圖後會顯示建議方向、頁數與 PDF 安全畫質。";updateReadabilityWarning();return}
   const p=makePagePlan(),dpi=safePdfDpi(p),auto=$("#printOrientation").value==="auto";
   const dpiNote=dpi<p.pdfDpi?`（原設定 ${p.pdfDpi} DPI，已啟用記憶體保護）`:"";
   const modeText=p.mode==="single"?"單頁全圖（流程較長時文字會縮小）":`閱讀清晰・自動多頁 ${p.pages.length} 頁${p.pages.length===1?"（目前可容納於單頁）":""}`;
-  box.textContent=`${auto?"自動建議":"目前設定"}：${p.orientation==="landscape"?"A4 橫式":"A4 直式"}・${modeText}・PDF ${dpi} DPI${dpiNote}・已自動裁切多餘白邊`;
+  box.textContent=`${auto?"自動建議":"目前設定"}：${p.orientation==="landscape"?"A4 橫式":"A4 直式"}・${modeText}・PDF ${dpi} DPI${dpiNote}・PDF 智慧尾頁合併／極窄邊界／水平置中／靠上；貼 Word 請使用「Word 版本輸出」`;
+  updateReadabilityWarning();
 }
 function removePageGuides(root){root.querySelectorAll('[data-page-guide="1"]').forEach(n=>n.remove())}
 function updatePageGuides(){
@@ -2802,12 +2997,12 @@ async function renderPdfPages(plan){
     const ctx=c.getContext("2d",{alpha:false});ctx.fillStyle="#ffffff";ctx.fillRect(0,0,c.width,c.height);
     const margin=Math.round(plan.marginMm/25.4*dpi),titlePx=Math.round(plan.titleSize/72*dpi),hintPx=Math.max(13,Math.round(8/72*dpi));
     let top=margin;
-    if(slice.title){ctx.fillStyle="#111827";ctx.font=`700 ${titlePx}px ${FONT_FAMILIES[plan.titleFont].css}`;ctx.textBaseline="top";ctx.textAlign=plan.titleAlign;const tx=plan.titleAlign==="left"?margin:plan.titleAlign==="right"?c.width-margin:c.width/2;ctx.fillText(plan.title,tx,top);top+=Math.round(titlePx*1.55)}
-    if(i>0){ctx.fillStyle="#64748b";ctx.font=`700 ${hintPx}px ${FONT_FAMILIES.default.css}`;ctx.textAlign="center";ctx.textBaseline="top";ctx.fillText(`← 接第 ${i} 頁`,c.width/2,top);top+=Math.round(hintPx*1.5)}
+    if(slice.title){ctx.fillStyle="#111827";ctx.font=`700 ${titlePx}px ${FONT_FAMILIES[plan.titleFont].css}`;ctx.textBaseline="top";ctx.textAlign=plan.titleAlign;const tx=plan.titleAlign==="left"?margin:plan.titleAlign==="right"?c.width-margin:c.width/2;ctx.fillText(plan.title,tx,top);top+=Math.round(titlePx*1.22)}
+    if(i>0){ctx.fillStyle="#64748b";ctx.font=`700 ${hintPx}px ${FONT_FAMILIES.default.css}`;ctx.textAlign="center";ctx.textBaseline="top";ctx.fillText(`← 接第 ${i} 頁`,c.width/2,top);top+=Math.round(hintPx*1.10)}
     const bottomHint=i<plan.pages.length-1?Math.round(hintPx*1.8):0;
     const availW=c.width-margin*2,availH=c.height-margin-top-bottomHint;
     const k=Math.min(availW/slice.w,availH/slice.h),dw=Math.max(1,Math.round(slice.w*k)),dh=Math.max(1,Math.round(slice.h*k));
-    const dx=Math.round(margin+(availW-dw)/2),dy=Math.round(top+(availH-dh)/2);
+    const dx=Math.round(margin+(availW-dw)/2),dy=Math.round(top+Math.max(3,Math.round(dpi*1.5/25.4)));
 
     // 直接把 SVG 以 PDF 頁面實際需要的像素尺寸重新渲染。
     // 不再先產生低解析整圖再放大，因此節點文字與線條放大後會清楚很多。
@@ -2823,7 +3018,37 @@ async function renderPdfPages(plan){
   return{pages,dpi};
 }
 
+
+let exportPreviewMode="pdf";
+function renderWordCropPreview(){
+  const pagesBox=$("#exportPages"),summary=$("#exportModalSummary");
+  if(!pagesBox||!summary)throw new Error("word preview DOM missing");
+  pagesBox.innerHTML="";
+  const out=wordVectorSvgString();
+  $("#exportModalTitle").textContent="Word 裁切預覽";
+  $("#previewPdfBtn").classList.add("hidden");
+  $("#previewWordSvgBtn").classList.remove("hidden");
+  $("#previewWordPngBtn").classList.remove("hidden");
+  const mode=$("#wordCropMode").value;
+  const modeName=mode==="tight"?"更緊":mode==="roomy"?"保留空間":"標準";
+  summary.textContent=`實際 Word 輸出範圍・${modeName}邊界・SVG 可任意放大不糊`;
+
+  const card=document.createElement("div");card.className="word-preview-card";
+  const meta=document.createElement("div");meta.className="word-preview-meta";
+  meta.textContent="粉紅虛線外框就是實際輸出邊界；框外不會輸出。";
+  const paper=document.createElement("div");paper.className="word-preview-paper";
+  const parsed=new DOMParser().parseFromString(out.svg,"image/svg+xml");
+  if(parsed.querySelector("parsererror"))throw new Error("word svg parse failed");
+  const previewSvg=document.importNode(parsed.documentElement,true);
+  previewSvg.removeAttribute("width");previewSvg.removeAttribute("height");
+  previewSvg.setAttribute("preserveAspectRatio","xMidYMid meet");
+  paper.appendChild(previewSvg);card.append(meta,paper);pagesBox.appendChild(card);
+}
 function renderExportPreview(){
+  $("#exportModalTitle").textContent="PDF 輸出預覽";
+  $("#previewPdfBtn").classList.remove("hidden");
+  $("#previewWordSvgBtn").classList.add("hidden");
+  $("#previewWordPngBtn").classList.add("hidden");
   const pagesBox=$("#exportPages");
   const summary=$("#exportModalSummary");
   if(!pagesBox||!summary)throw new Error("export preview DOM missing");
@@ -2893,7 +3118,7 @@ function renderExportPreview(){
 function refreshExportPreviewIfOpen(){
   const modal=$("#exportModal");
   if(modal&&!modal.classList.contains("hidden")){
-    try{renderExportPreview()}catch(e){console.error(e)}
+    try{exportPreviewMode==="word"?renderWordCropPreview():renderExportPreview()}catch(e){console.error(e)}
   }
 }
 
@@ -2907,13 +3132,13 @@ function jpegPagesToPdf(jpegs,orientation){
   const xrefOffset=offset;let xref=`xref\n0 ${maxObj+1}\n0000000000 65535 f \n`;for(let i=1;i<=maxObj;i++)xref+=`${String(offsets[i]).padStart(10,"0")} 00000 n \n`;xref+=`trailer\n<< /Size ${maxObj+1} /Root 1 0 R >>\nstartxref\n${xrefOffset}\n%%EOF`;parts.push(asciiBytes(xref));return new Blob([concatBytes(parts)],{type:"application/pdf"});
 }
 function projectData(){
-  const ex=exportSettings();return{app:"SmartFlow",version:"1.9.5.3",savedAt:new Date().toISOString(),source:source.value,inputMode:$("#inputMode").value,direction:direction.value,scale:Number(scale.value),flowTheme:flowThemeKey,nodes,positions,typography:{globalFontKey,globalFontSize,branchLabelFontKey,branchLabelFontSize},routing:{globalLineWidth,routingPadding,routingMode},export:{orientation:ex.orientation,mode:ex.mode,marginMm:ex.marginMm,title:ex.title,titleSize:ex.titleSize,titleFont:ex.titleFont,titleAlign:ex.titleAlign,pngScale:ex.pngScale,pdfDpi:ex.pdfDpi,pdfQuality:ex.pdfQuality,overlap:ex.overlap,showGuides:ex.showGuides}};
+  const ex=exportSettings();return{app:"SmartFlow",version:"1.9.8.1",savedAt:new Date().toISOString(),source:source.value,inputMode:$("#inputMode").value,direction:direction.value,scale:Number(scale.value),flowTheme:flowThemeKey,layoutDensity,wordCropMode:$("#wordCropMode").value,nodes,positions,typography:{globalFontKey,globalFontSize,branchLabelFontKey,branchLabelFontSize},routing:{globalLineWidth,routingPadding,routingMode},export:{orientation:ex.orientation,mode:ex.mode,marginMm:ex.marginMm,title:ex.title,titleSize:ex.titleSize,titleFont:ex.titleFont,titleAlign:ex.titleAlign,pngScale:ex.pngScale,pdfDpi:ex.pdfDpi,pdfQuality:ex.pdfQuality,overlap:ex.overlap,showGuides:ex.showGuides}};
 }
 function applyProjectData(d){
-  if(!d||!Array.isArray(d.nodes))throw new Error("invalid project");nodes=d.nodes;positions=d.positions||{};source.value=d.source||"";$("#inputMode").value=["smart","easy","natural"].includes(d.inputMode)?d.inputMode:"smart";direction.value=d.direction==="horizontal"?"horizontal":"vertical";scale.value=Math.max(55,Math.min(180,Number(d.scale)||100));scaleValue.textContent=scale.value+"%";flowThemeKey=FLOW_THEMES[d.flowTheme]?d.flowTheme:"chartGenerator";$("#flowTheme").value=flowThemeKey;renderSwatches();
+  if(!d||!Array.isArray(d.nodes))throw new Error("invalid project");nodes=d.nodes;positions=d.positions||{};source.value=d.source||"";$("#inputMode").value=["smart","easy","natural"].includes(d.inputMode)?d.inputMode:"smart";direction.value=d.direction==="horizontal"?"horizontal":"vertical";scale.value=Math.max(55,Math.min(180,Number(d.scale)||100));scaleValue.textContent=scale.value+"%";flowThemeKey=FLOW_THEMES[d.flowTheme]?d.flowTheme:"chartGenerator";$("#flowTheme").value=flowThemeKey;layoutDensity=["smart","compact","standard"].includes(d.layoutDensity)?d.layoutDensity:"smart";$("#layoutDensity").value=layoutDensity;$("#wordCropMode").value=["tight","standard","roomy"].includes(d.wordCropMode||d.export?.wordCropMode)?(d.wordCropMode||d.export.wordCropMode):"tight";renderSwatches();
   if(d.typography){globalFontKey=validFontKey(d.typography.globalFontKey)?d.typography.globalFontKey:"default";globalFontSize=clampFontSize(d.typography.globalFontSize)||16;branchLabelFontKey=d.typography.branchLabelFontKey==="follow"?"follow":(validFontKey(d.typography.branchLabelFontKey)?d.typography.branchLabelFontKey:"follow");branchLabelFontSize=Math.max(9,Math.min(32,Number(d.typography.branchLabelFontSize)||11));$("#globalFontFamily").value=globalFontKey;$("#globalFontSize").value=globalFontSize;$("#branchLabelFont").value=branchLabelFontKey;$("#branchLabelSize").value=branchLabelFontSize}
   if(d.routing){globalLineWidth=Math.max(1,Math.min(6,Number(d.routing.globalLineWidth)||2.25));routingPadding=Math.max(8,Math.min(60,Number(d.routing.routingPadding)||18));routingMode=d.routing.routingMode==="simple"?"simple":"smart";$("#globalLineWidth").value=globalLineWidth;$("#routingPadding").value=routingPadding;$("#routingMode").value=routingMode}
-  const ex=d.export||d.print||{};$("#printOrientation").value=["auto","portrait","landscape"].includes(ex.orientation)?ex.orientation:(ex.orientation==="landscape"?"landscape":"auto");$("#printFit").value=ex.mode==="single"?"single":"multipage";$("#pageMargin").value=["6","10","15","20"].includes(String(ex.marginMm))?String(ex.marginMm):"6";$("#printTitle").value=ex.title||"流程圖";$("#titleFontSize").value=Math.max(12,Math.min(40,Number(ex.titleSize)||22));$("#titleFontFamily").value=validFontKey(ex.titleFont)?ex.titleFont:"default";$("#titleAlign").value=["left","center","right"].includes(ex.titleAlign)?ex.titleAlign:"center";$("#pngScale").value=["1","2","4"].includes(String(ex.pngScale))?String(ex.pngScale):"2";$("#pdfDpi").value=["180","240","300"].includes(String(ex.pdfDpi))?String(ex.pdfDpi):"300";$("#pdfQuality").value=["0.86","0.92","0.97"].includes(String(ex.pdfQuality))?String(ex.pdfQuality):"0.97";$("#pageOverlap").value=["0","16","32"].includes(String(ex.overlap))?String(ex.overlap):"16";$("#pageGuideMode").value=ex.showGuides===false?"hide":"show";
+  const ex=d.export||d.print||{};$("#printOrientation").value=["auto","portrait","landscape"].includes(ex.orientation)?ex.orientation:(ex.orientation==="landscape"?"landscape":"auto");$("#printFit").value=ex.mode==="single"?"single":"multipage";$("#pageMargin").value=["3","6","10"].includes(String(ex.marginMm))?String(ex.marginMm):"3";$("#printTitle").value=ex.title||"流程圖";$("#titleFontSize").value=Math.max(12,Math.min(40,Number(ex.titleSize)||18));$("#titleFontFamily").value=validFontKey(ex.titleFont)?ex.titleFont:"default";$("#titleAlign").value=["left","center","right"].includes(ex.titleAlign)?ex.titleAlign:"center";$("#pngScale").value=["1","2","4"].includes(String(ex.pngScale))?String(ex.pngScale):"2";$("#pdfDpi").value=["180","240","300"].includes(String(ex.pdfDpi))?String(ex.pdfDpi):"300";$("#pdfQuality").value=["0.86","0.92","0.97"].includes(String(ex.pdfQuality))?String(ex.pdfQuality):"0.97";$("#pageOverlap").value=["0","16","32"].includes(String(ex.overlap))?String(ex.overlap):"16";$("#pageGuideMode").value=ex.showGuides===false?"hide":"show";
   fitMode=true;viewZoom=1;resetPan();renderInputGuide();updateLeftPanelScrollHeight();renderEditor();render();runAudit();syncHistory();updateExportSummary();
 }
 function storageGet(){try{return localStorage.getItem(AUTOSAVE_KEY)}catch{return null}}
@@ -3193,6 +3418,17 @@ $("#redoBtn").addEventListener("click",()=>{if(!redoStack.length)return;undoStac
 direction.addEventListener("change",()=>{clearUnlockedPositions();fitMode=true;resetPan();render()});
 scale.addEventListener("input",()=>{scaleValue.textContent=scale.value+"%";fitMode=false;viewZoom=1;applyViewport()});
 $("#flowTheme").addEventListener("change",()=>{saveHistory();flowThemeKey=$("#flowTheme").value;renderSwatches();render();msg(`已切換：${theme().name}`)});
+$("#layoutDensity").addEventListener("change",()=>{
+  saveHistory();
+  const v=$("#layoutDensity").value;
+  layoutDensity=["smart","compact","standard"].includes(v)?v:"smart";
+  clearUnlockedPositions();
+  fitMode=true;viewZoom=1;resetPan();
+  render();
+  const s=flowComplexityStats();
+  const name=layoutDensity==="smart"?`智慧最佳化（${s.nodes} 節點）`:layoutDensity==="compact"?"緊湊固定":"標準寬度";
+  msg(`已切換：${name}`);
+});
 
 $("#zoomInBtn").addEventListener("click",()=>{fitMode=false;viewZoom=Math.min(5,viewZoom*1.18);applyViewport()});
 $("#zoomOutBtn").addEventListener("click",()=>{fitMode=false;viewZoom=Math.max(.15,viewZoom/1.18);applyViewport()});
@@ -3200,6 +3436,364 @@ $("#actualBtn").addEventListener("click",()=>{fitMode=false;viewZoom=1;scale.val
 $("#fitBtn").addEventListener("click",()=>{fitMode=true;viewZoom=1;resetPan();applyViewport();msg("已完整顯示")});
 $("#centerBtn").addEventListener("click",()=>{resetPan();applyViewport();msg("已置中")});
 window.addEventListener("resize",applyViewport);
+
+
+
+function findVisiblePixelBounds(canvas){
+  const ctx=canvas.getContext("2d",{willReadFrequently:true});
+  const w=canvas.width,h=canvas.height;
+  const data=ctx.getImageData(0,0,w,h).data;
+  const visible=(x,y)=>{
+    const i=(y*w+x)*4;
+    // 接近純白才視為空白；淡色節點、灰線與文字都會保留。
+    return data[i+3]>8 && (data[i]<247 || data[i+1]<247 || data[i+2]<247);
+  };
+  let top=0,bottom=h-1,left=0,right=w-1,found=false;
+
+  outerTop:
+  for(;top<h;top++){
+    for(let x=0;x<w;x++)if(visible(x,top)){found=true;break outerTop}
+  }
+  if(!found)return{x:0,y:0,w,h};
+
+  outerBottom:
+  for(;bottom>=top;bottom--){
+    for(let x=0;x<w;x++)if(visible(x,bottom))break outerBottom
+  }
+
+  outerLeft:
+  for(;left<w;left++){
+    for(let y=top;y<=bottom;y++)if(visible(left,y))break outerLeft
+  }
+
+  outerRight:
+  for(;right>=left;right--){
+    for(let y=top;y<=bottom;y++)if(visible(right,y))break outerRight
+  }
+
+  return{x:left,y:top,w:Math.max(1,right-left+1),h:Math.max(1,bottom-top+1)};
+}
+
+function wordCropPaddingPx(crop){
+  const mode=$("#wordCropMode")?.value||"tight";
+  const base=Math.min(crop.w,crop.h);
+  if(mode==="roomy")return Math.max(34,Math.min(72,Math.round(base*.025)));
+  if(mode==="standard")return Math.max(20,Math.min(46,Math.round(base*.016)));
+  return Math.max(8,Math.min(24,Math.round(base*.008)));
+}
+function centeredTrimCanvas(sourceCanvas){
+  const crop=findVisiblePixelBounds(sourceCanvas);
+  const pad=wordCropPaddingPx(crop);
+  const out=document.createElement("canvas");
+  out.width=crop.w+pad*2;
+  out.height=crop.h+pad*2;
+  const ctx=out.getContext("2d",{alpha:false});
+  ctx.fillStyle="#ffffff";
+  ctx.fillRect(0,0,out.width,out.height);
+  ctx.drawImage(
+    sourceCanvas,
+    crop.x,crop.y,crop.w,crop.h,
+    pad,pad,crop.w,crop.h
+  );
+  return{canvas:out,crop,pad};
+}
+
+
+function wordVectorBounds(){
+  let b;
+  try{
+    b=svg.getBBox();
+  }catch{
+    b=exportBounds;
+  }
+  const mode=$("#wordCropMode")?.value||"tight";
+  const maxSide=Math.max(1,b.width,b.height);
+  const pad=mode==="roomy"
+    ? Math.max(20,Math.min(42,maxSide*.018))
+    : mode==="standard"
+      ? Math.max(10,Math.min(24,maxSide*.010))
+      : Math.max(4,Math.min(12,maxSide*.0045));
+  return{x:b.x-pad,y:b.y-pad,w:b.width+pad*2,h:b.height+pad*2};
+}
+function wordVectorSvgString(){
+  const b=wordVectorBounds();
+  const c=svg.cloneNode(true);
+  removePageGuides(c);
+  c.setAttribute("xmlns",NS);
+  c.setAttribute("viewBox",`${b.x} ${b.y} ${b.w} ${b.h}`);
+  c.setAttribute("width",Math.max(1,Math.round(b.w)));
+  c.setAttribute("height",Math.max(1,Math.round(b.h)));
+  c.setAttribute("preserveAspectRatio","xMidYMid meet");
+  c.querySelectorAll("text").forEach(x=>{
+    if(!x.getAttribute("font-family"))x.setAttribute("font-family",FONT_FAMILIES.default.css);
+  });
+  const bg=el("rect",{x:b.x,y:b.y,width:b.w,height:b.h,fill:"#ffffff"});
+  c.insertBefore(bg,c.firstChild);
+  return{svg:new XMLSerializer().serializeToString(c),bounds:b};
+}
+
+async function buildTightPngAsset(targetWidth=3200){
+  if(!nodes.length)throw new Error("no flow");
+  const b=exportBounds,maxPixels=52000000;
+  let scale=Math.max(3,Math.min(7,targetWidth/Math.max(1,b.w)));
+  let w=Math.max(1,Math.round(b.w*scale));
+  let h=Math.max(1,Math.round(b.h*scale));
+  if(w*h>maxPixels){
+    const k=Math.sqrt(maxPixels/(w*h));
+    w=Math.max(1,Math.round(w*k));
+    h=Math.max(1,Math.round(h*k));
+  }
+  const img=await exportImage(b,w,h);
+  const raw=document.createElement("canvas");
+  raw.width=w;raw.height=h;
+  const ctx=raw.getContext("2d",{alpha:false});
+  ctx.fillStyle="#ffffff";ctx.fillRect(0,0,w,h);
+  ctx.drawImage(img,0,0,img.naturalWidth,img.naturalHeight,0,0,w,h);
+  const trimmed=centeredTrimCanvas(raw);
+  const blob=await new Promise((resolve,reject)=>{
+    trimmed.canvas.toBlob(b=>b?resolve(b):reject(new Error("PNG blob failed")),"image/png");
+  });
+  const result={blob,width:trimmed.canvas.width,height:trimmed.canvas.height};
+  img.src="";raw.width=1;raw.height=1;
+  trimmed.canvas.width=1;trimmed.canvas.height=1;
+  return result;
+}
+
+async function downloadTightPng(){
+  if(!nodes.length)return msg("目前沒有流程圖");
+  const btn=$("#tightPngBtn");btn.disabled=true;
+  try{
+    msg("正在產生 PNG 檔案…");
+    const a=await buildTightPngAsset(3200);
+    download(`${safeFilename($("#printTitle").value)}_流程圖.png`,a.blob);
+    msg(`PNG 檔案已下載・${a.width} × ${a.height}px`);
+  }catch(e){
+    console.error(e);msg("緊密 PNG 產生失敗");
+  }finally{btn.disabled=false}
+}
+
+function crc32Table(){
+  if(crc32Table.cache)return crc32Table.cache;
+  const table=new Uint32Array(256);
+  for(let n=0;n<256;n++){
+    let c=n;
+    for(let k=0;k<8;k++)c=(c&1)?(0xEDB88320^(c>>>1)):(c>>>1);
+    table[n]=c>>>0;
+  }
+  crc32Table.cache=table;
+  return table;
+}
+function crc32(bytes){
+  const table=crc32Table();let c=0xFFFFFFFF;
+  for(const b of bytes)c=table[(c^b)&0xFF]^(c>>>8);
+  return (c^0xFFFFFFFF)>>>0;
+}
+function zipDosTimeDate(d=new Date()){
+  const year=Math.max(1980,d.getFullYear());
+  return{
+    time:((d.getHours()&31)<<11)|((d.getMinutes()&63)<<5)|((Math.floor(d.getSeconds()/2))&31),
+    date:(((year-1980)&127)<<9)|(((d.getMonth()+1)&15)<<5)|(d.getDate()&31)
+  };
+}
+function le16(v){const a=new Uint8Array(2);new DataView(a.buffer).setUint16(0,v,true);return a}
+function le32(v){const a=new Uint8Array(4);new DataView(a.buffer).setUint32(0,v>>>0,true);return a}
+function zipStore(entries){
+  const enc=new TextEncoder(),parts=[],centrals=[];
+  const dt=zipDosTimeDate();let offset=0;
+  for(const e of entries){
+    const name=enc.encode(e.name),data=e.data instanceof Uint8Array?e.data:new Uint8Array(e.data);
+    const crc=crc32(data),flags=0x0800;
+    const local=concatBytes([
+      le32(0x04034b50),le16(20),le16(flags),le16(0),le16(dt.time),le16(dt.date),
+      le32(crc),le32(data.length),le32(data.length),le16(name.length),le16(0),name,data
+    ]);
+    parts.push(local);
+    const central=concatBytes([
+      le32(0x02014b50),le16(20),le16(20),le16(flags),le16(0),le16(dt.time),le16(dt.date),
+      le32(crc),le32(data.length),le32(data.length),le16(name.length),le16(0),le16(0),
+      le16(0),le16(0),le32(0),le32(offset),name
+    ]);
+    centrals.push(central);offset+=local.length;
+  }
+  const centralData=concatBytes(centrals),centralOffset=offset;
+  const end=concatBytes([
+    le32(0x06054b50),le16(0),le16(0),le16(entries.length),le16(entries.length),
+    le32(centralData.length),le32(centralOffset),le16(0)
+  ]);
+  return new Blob([...parts,centralData,end],{type:"application/vnd.openxmlformats-officedocument.wordprocessingml.document"});
+}
+function xmlEsc(s){
+  return String(s??"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;").replace(/'/g,"&apos;");
+}
+function utf8(s){return new TextEncoder().encode(s)}
+
+async function downloadWordDocx(){
+  if(!nodes.length)return msg("目前沒有流程圖");
+  const btn=$("#wordExportBtn");btn.disabled=true;
+  try{
+    msg("正在產生 Word 文件…");
+    const a=await buildTightPngAsset(3400);
+    const png=new Uint8Array(await a.blob.arrayBuffer());
+    const ratio=a.width/Math.max(1,a.height);
+
+    // Word 固定使用 A4 規格：
+    // 直式 210 × 297 mm；橫式 297 × 210 mm。
+    // 依流程圖比例自動選擇最合適方向，不使用自訂紙張高度。
+    const landscape=ratio>1.18;
+    const A4_PORTRAIT={w:11906,h:16838};
+    const A4_LANDSCAPE={w:16838,h:11906};
+    const page=landscape?A4_LANDSCAPE:A4_PORTRAIT;
+    const pageW=page.w,pageH=page.h;
+    const margin=284; // 約 5 mm
+
+    // 圖片在 A4 可用範圍內等比例放到最大，水平置中、垂直靠上。
+    const usableW=(pageW-margin*2)*635,usableH=(pageH-margin*2)*635;
+    let cx=usableW,cy=Math.round(cx/ratio);
+    if(cy>usableH){cy=usableH;cx=Math.round(cy*ratio)}
+    const title=xmlEsc(clean($("#printTitle").value)||"流程圖");
+
+    const contentTypes=`<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types">
+<Default Extension="rels" ContentType="application/vnd.openxmlformats-package.relationships+xml"/>
+<Default Extension="xml" ContentType="application/xml"/>
+<Default Extension="png" ContentType="image/png"/>
+<Override PartName="/word/document.xml" ContentType="application/vnd.openxmlformats-officedocument.wordprocessingml.document.main+xml"/>
+<Override PartName="/docProps/core.xml" ContentType="application/vnd.openxmlformats-package.core-properties+xml"/>
+<Override PartName="/docProps/app.xml" ContentType="application/vnd.openxmlformats-officedocument.extended-properties+xml"/>
+</Types>`;
+    const rootRels=`<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships">
+<Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument" Target="word/document.xml"/>
+<Relationship Id="rId2" Type="http://schemas.openxmlformats.org/package/2006/relationships/metadata/core-properties" Target="docProps/core.xml"/>
+<Relationship Id="rId3" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/extended-properties" Target="docProps/app.xml"/>
+</Relationships>`;
+    const docRels=`<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships">
+<Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/image" Target="media/flowchart.png"/>
+</Relationships>`;
+    const documentXml=`<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<w:document xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main"
+ xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships"
+ xmlns:wp="http://schemas.openxmlformats.org/drawingml/2006/wordprocessingDrawing"
+ xmlns:a="http://schemas.openxmlformats.org/drawingml/2006/main"
+ xmlns:pic="http://schemas.openxmlformats.org/drawingml/2006/picture">
+<w:body>
+<w:p>
+<w:pPr><w:jc w:val="center"/><w:spacing w:before="0" w:after="0"/></w:pPr>
+<w:r><w:drawing><wp:inline distT="0" distB="0" distL="0" distR="0">
+<wp:extent cx="${cx}" cy="${cy}"/>
+<wp:effectExtent l="0" t="0" r="0" b="0"/>
+<wp:docPr id="1" name="${title}" descr="${title}"/>
+<wp:cNvGraphicFramePr><a:graphicFrameLocks noChangeAspect="1"/></wp:cNvGraphicFramePr>
+<a:graphic><a:graphicData uri="http://schemas.openxmlformats.org/drawingml/2006/picture">
+<pic:pic>
+<pic:nvPicPr><pic:cNvPr id="0" name="flowchart.png"/><pic:cNvPicPr/></pic:nvPicPr>
+<pic:blipFill><a:blip r:embed="rId1"/><a:stretch><a:fillRect/></a:stretch></pic:blipFill>
+<pic:spPr><a:xfrm><a:off x="0" y="0"/><a:ext cx="${cx}" cy="${cy}"/></a:xfrm><a:prstGeom prst="rect"><a:avLst/></a:prstGeom></pic:spPr>
+</pic:pic>
+</a:graphicData></a:graphic>
+</wp:inline></w:drawing></w:r>
+</w:p>
+<w:sectPr>
+<w:pgSz w:w="${pageW}" w:h="${pageH}"${landscape?' w:orient="landscape"':''}/>
+<w:pgMar w:top="${margin}" w:right="${margin}" w:bottom="${margin}" w:left="${margin}" w:header="0" w:footer="0" w:gutter="0"/>
+</w:sectPr>
+</w:body></w:document>`;
+    const now=new Date().toISOString();
+    const core=`<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<cp:coreProperties xmlns:cp="http://schemas.openxmlformats.org/package/2006/metadata/core-properties"
+ xmlns:dc="http://purl.org/dc/elements/1.1/"
+ xmlns:dcterms="http://purl.org/dc/terms/"
+ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+<dc:title>${title}</dc:title><dc:creator>智慧流程圖產生器</dc:creator>
+<dcterms:created xsi:type="dcterms:W3CDTF">${now}</dcterms:created>
+<dcterms:modified xsi:type="dcterms:W3CDTF">${now}</dcterms:modified>
+</cp:coreProperties>`;
+    const app=`<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<Properties xmlns="http://schemas.openxmlformats.org/officeDocument/2006/extended-properties"
+ xmlns:vt="http://schemas.openxmlformats.org/officeDocument/2006/docPropsVTypes">
+<Application>智慧流程圖產生器</Application><AppVersion>1.9.8</AppVersion>
+</Properties>`;
+
+    const docx=zipStore([
+      {name:"[Content_Types].xml",data:utf8(contentTypes)},
+      {name:"_rels/.rels",data:utf8(rootRels)},
+      {name:"word/document.xml",data:utf8(documentXml)},
+      {name:"word/_rels/document.xml.rels",data:utf8(docRels)},
+      {name:"word/media/flowchart.png",data:png},
+      {name:"docProps/core.xml",data:utf8(core)},
+      {name:"docProps/app.xml",data:utf8(app)}
+    ]);
+    download(`${safeFilename($("#printTitle").value)}_Word版本.docx`,docx);
+    msg(`Word 文件已下載・A4 ${landscape?"橫式":"直式"}・流程圖已置中靠上`);
+  }catch(e){
+    console.error(e);msg("Word 文件產生失敗");
+  }finally{btn.disabled=false}
+}
+
+function downloadWordVectorSvg(){
+  if(!nodes.length)return msg("目前沒有流程圖");
+  try{
+    const out=wordVectorSvgString();
+    download(`${safeFilename($("#printTitle").value)}_Word版本.svg`,new Blob([out.svg],{type:"image/svg+xml;charset=utf-8"}));
+    msg(`Word SVG 備援版已下載・${Math.round(out.bounds.w)} × ${Math.round(out.bounds.h)} SVG 單位`);
+  }catch(e){
+    console.error(e);
+    msg("Word 版本產生失敗");
+  }
+}
+
+async function downloadWordReadyPng(){
+  if(!nodes.length)return msg("目前沒有流程圖");
+  const btn=$("#wordPngBtn");
+  btn.disabled=true;
+  try{
+    msg("正在產生 Word 專用集中圖…");
+    const b=exportBounds;
+    const targetWidth=3000,maxPixels=48000000;
+    let scale=Math.max(3,Math.min(6,targetWidth/Math.max(1,b.w)));
+    let w=Math.max(1,Math.round(b.w*scale));
+    let h=Math.max(1,Math.round(b.h*scale));
+    if(w*h>maxPixels){
+      const k=Math.sqrt(maxPixels/(w*h));
+      w=Math.max(1,Math.round(w*k));
+      h=Math.max(1,Math.round(h*k));
+    }
+
+    const img=await exportImage(b,w,h);
+    const raw=document.createElement("canvas");
+    raw.width=w;raw.height=h;
+    const rawCtx=raw.getContext("2d",{alpha:false});
+    rawCtx.fillStyle="#ffffff";
+    rawCtx.fillRect(0,0,w,h);
+    rawCtx.drawImage(img,0,0,img.naturalWidth,img.naturalHeight,0,0,w,h);
+
+    const trimmed=centeredTrimCanvas(raw);
+    await new Promise((resolve,reject)=>{
+      trimmed.canvas.toBlob(blob=>{
+        if(!blob)return reject(new Error("PNG blob failed"));
+        download(`${safeFilename($("#printTitle").value)}_Word集中版.png`,blob);
+        resolve();
+      },"image/png");
+    });
+
+    const removed=Math.max(0,w*h-trimmed.crop.w*trimmed.crop.h);
+    const ratio=Math.round(removed/Math.max(1,w*h)*100);
+    img.src="";
+    raw.width=1;raw.height=1;
+    trimmed.canvas.width=1;trimmed.canvas.height=1;
+    msg(`Word 集中版已下載・自動移除約 ${ratio}% 外圍空白`);
+  }catch(e){
+    console.error(e);
+    msg("Word 專用圖產生失敗，請改用 SVG");
+  }finally{
+    btn.disabled=false;
+  }
+}
+$("#wordSvgBtn").addEventListener("click",downloadWordVectorSvg);
+$("#wordExportBtn").addEventListener("click",downloadWordDocx);
+$("#tightPngBtn").addEventListener("click",downloadTightPng);
+$("#wordPngBtn").addEventListener("click",downloadWordReadyPng);
 
 $("#svgBtn").addEventListener("click",()=>{if(!nodes.length)return msg("目前沒有流程圖");const name=safeFilename($("#printTitle").value);download(`${name}.svg`,new Blob([exportSvgString()],{type:"image/svg+xml;charset=utf-8"}));msg("SVG 已下載")});
 $("#pngBtn").addEventListener("click",async()=>{if(!nodes.length)return msg("目前沒有流程圖");try{msg("正在產生 PNG…");const want=exportSettings().pngScale,maxPixels=60000000;let w=Math.max(1,Math.round(exportBounds.w*want)),h=Math.max(1,Math.round(exportBounds.h*want)),actual=want;if(w*h>maxPixels){const k=Math.sqrt(maxPixels/(w*h));w=Math.max(1,Math.round(w*k));h=Math.max(1,Math.round(h*k));actual=Math.round(actual*k*100)/100;msg("流程圖很大，PNG 已啟用記憶體保護")};const img=await exportImage(null,w,h),c=document.createElement("canvas");c.width=w;c.height=h;const x=c.getContext("2d",{alpha:false});x.fillStyle="#ffffff";x.fillRect(0,0,w,h);x.drawImage(img,0,0,img.naturalWidth,img.naturalHeight,0,0,w,h);c.toBlob(b=>{if(b)download(`${safeFilename($("#printTitle").value)}_${want}x.png`,b);msg(actual===want?`PNG ${want}× 已下載`:`PNG 已以安全解析度輸出`)} ,"image/png")}catch(e){console.error(e);msg("PNG 產生失敗，請改用 SVG")}});
@@ -3210,19 +3804,22 @@ $("#jsonFile").addEventListener("change",async e=>{const f=e.target.files?.[0];i
 $("#exportPreviewBtn").addEventListener("click",()=>{
   if(!nodes.length)return msg("目前沒有流程圖");
   try{
-    renderExportPreview();
-    $("#exportModal").classList.remove("hidden");
-    msg("已開啟輸出預覽");
-  }catch(e){
-    console.error(e);
-    msg("輸出預覽產生失敗，請重新產生流程圖後再試");
-  }
+    exportPreviewMode="pdf";renderExportPreview();$("#exportModal").classList.remove("hidden");msg("已開啟 PDF 輸出預覽");
+  }catch(e){console.error(e);msg("PDF 輸出預覽產生失敗，請重新產生流程圖後再試")}
+});
+$("#wordPreviewBtn").addEventListener("click",()=>{
+  if(!nodes.length)return msg("目前沒有流程圖");
+  try{
+    exportPreviewMode="word";renderWordCropPreview();$("#exportModal").classList.remove("hidden");msg("已開啟 Word 裁切預覽");
+  }catch(e){console.error(e);msg("Word 裁切預覽產生失敗")}
 });
 $("#closeExportModalBtn").addEventListener("click",()=>$("#exportModal").classList.add("hidden"));
 $("#exportModal").addEventListener("click",e=>{if(e.target===$("#exportModal"))$("#exportModal").classList.add("hidden")});
 $("#previewPdfBtn").addEventListener("click",()=>{$("#exportModal").classList.add("hidden");$("#pdfBtn").click()});
+$("#previewWordSvgBtn").addEventListener("click",()=>{$("#exportModal").classList.add("hidden");$("#wordSvgBtn").click()});
+$("#previewWordPngBtn").addEventListener("click",()=>{$("#exportModal").classList.add("hidden");$("#wordPngBtn").click()});
 
-["printOrientation","printFit","pageMargin","titleFontSize","titleFontFamily","titleAlign","pngScale","pdfDpi","pdfQuality","pageOverlap","pageGuideMode"].forEach(id=>{$("#"+id).addEventListener("change",()=>{updatePageGuides();updateExportSummary();refreshExportPreviewIfOpen();scheduleAutosave()})});
+["printOrientation","printFit","pageMargin","titleFontSize","titleFontFamily","titleAlign","pngScale","pdfDpi","pdfQuality","pageOverlap","pageGuideMode","wordCropMode"].forEach(id=>{$("#"+id).addEventListener("change",()=>{updatePageGuides();updateExportSummary();refreshExportPreviewIfOpen();scheduleAutosave()})});
 $("#printTitle").addEventListener("input",()=>{updateExportSummary();refreshExportPreviewIfOpen();scheduleAutosave()});
 window.addEventListener("beforeunload",flushAutosave);
 
@@ -3288,7 +3885,7 @@ $("#resetTypographyBtn").addEventListener("click",()=>{
   renderEditor();render();msg("已恢復整體文字預設");
 });
 
-["direction","scale","inputMode","printOrientation","printFit","pageMargin","printTitle","titleFontSize","titleFontFamily","titleAlign","pngScale","pdfDpi","pdfQuality","pageOverlap","pageGuideMode"].forEach(id=>{
+["direction","scale","inputMode","layoutDensity","printOrientation","printFit","pageMargin","printTitle","titleFontSize","titleFontFamily","titleAlign","pngScale","pdfDpi","pdfQuality","pageOverlap","pageGuideMode","wordCropMode"].forEach(id=>{
   const c=$("#"+id);if(!c)return;
   c.addEventListener("focus",()=>{if(c.dataset.historyArmed)return;c.dataset.historyArmed="1";saveHistory()});
   c.addEventListener("blur",()=>{delete c.dataset.historyArmed});
